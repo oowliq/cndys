@@ -2,8 +2,8 @@ import { StyledTheme } from './types';
 
 const theme: StyledTheme = {
     colors: {
-        primary: '#FD65B2',
-        secondary: '#84DCE0',
+        primary: '#0070f3',
+        secondary: '#ee5253',
         background: '#f1f2f6',
         main: '#fff',
     },

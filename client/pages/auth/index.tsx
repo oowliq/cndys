@@ -70,7 +70,7 @@ const AuthPage: NextPage = () => {
     return (
         <PageWrapper>
             <Head>
-                <title>CNDYS | Auth</title>
+                <title>Authorization</title>
             </Head>
             <AuthWrapper>
                 <AppName>cndys</AppName>

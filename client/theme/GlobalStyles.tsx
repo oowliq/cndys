@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     body {
         font-family: Roboto;
-        background-color: #f5f8fa; 
+        background-color: ${(props) => props.theme.colors.background}; 
         color: ${(props) => props.theme.fontColors.main};
     }`;
 

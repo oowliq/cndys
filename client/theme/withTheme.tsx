@@ -4,7 +4,7 @@ import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyles';
 
 const withTheme = <P extends object>(Component: React.ComponentType<P>) =>
-    class WithLoading extends React.Component<P> {
+    class WithTheme extends React.Component<P> {
         render() {
             const { ...props } = this.props;
             return (
