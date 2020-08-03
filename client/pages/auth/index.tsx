@@ -9,7 +9,6 @@ import { authService } from 'services';
 import { useRouter } from 'next/router';
 
 const PageWrapper = styled.div`
-    background-image: url(/images/hero.jpg);
     width: 100vw;
     height: 100vh;
     background-position: center;
@@ -25,6 +24,8 @@ const AuthWrapper = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: relative;
+    z-index: 40;
 `;
 
 const AppName = styled.h1`
@@ -81,6 +82,26 @@ const AuthPage: NextPage = () => {
             <Head>
                 <title>Authorization</title>
             </Head>
+            <div className="waveWrapper waveAnimation">
+                <div className="waveWrapperInner bgTop">
+                    <div
+                        className="wave waveTop"
+                        style={{ backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-top.png')" }}
+                    ></div>
+                </div>
+                <div className="waveWrapperInner bgMiddle">
+                    <div
+                        className="wave waveMiddle"
+                        style={{ backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-mid.png')" }}
+                    ></div>
+                </div>
+                <div className="waveWrapperInner bgBottom">
+                    <div
+                        className="wave waveBottom"
+                        style={{ backgroundImage: "url('http://front-end-noobs.com/jecko/img/wave-bot.png')" }}
+                    ></div>
+                </div>
+            </div>
             <AuthWrapper>
                 <AppName>cndys</AppName>
                 <AppDescription>Keep your song library organized</AppDescription>

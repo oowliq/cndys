@@ -3,9 +3,17 @@ import router from 'next/router';
 class AuthService {
     private readonly authEndpoint = 'https://accounts.spotify.com/authorize';
 
-    private readonly redirectUri = 'http://localhost:8080/auth';
+    private readonly redirectUri =
+        typeof window !== 'undefined' ? `${window.location.origin}/auth` : 'http://localhost:8080/auth';
 
-    private readonly scopes = ['user-read-currently-playing', 'user-read-playback-state'];
+    private readonly scopes = [
+        'user-read-currently-playing',
+        'user-read-playback-state',
+        'user-read-private',
+        'user-library-read',
+        'playlist-read-private',
+        'playlist-read-collaborative',
+    ];
 
     private readonly clientId = process.env.CLIENT_ID as string;
 

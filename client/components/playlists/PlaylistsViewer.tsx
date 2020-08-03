@@ -1,12 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Field } from 'components/layout';
 import { Playlist } from './Playlist';
-import { SearchIcon } from 'components/icons';
+import { SearchIcon, NotFoundIcon } from 'components/icons';
 import { UserPlaylist } from 'interfaces/spotify';
+import { useSelector } from 'store';
+import { useDispatch } from 'react-redux';
+import { inputSearchField } from 'store/manager';
+import posed, { PoseGroup } from 'react-pose';
 
 interface PlaylistsViewerProps {
     playlists: UserPlaylist[];
+    selectedPlaylist: string | null;
+    onSelectPlaylist: (playlistId: string) => void;
 }
 
 const PlaylistsWrapper = styled.div`
@@ -16,9 +22,27 @@ const PlaylistsWrapper = styled.div`
     min-width: 300px;
 `;
 
-const Playlists = styled.div`
+const PlaylistsNotFound = styled.div`
+    height: 316px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+        fill: ${(props) => props.theme.colors.primary};
+    }
+`;
+
+const PlaylistsNotFoundTitle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${(props) => props.theme.colors.primary};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+`;
+
+const Playlists = posed(styled.div`
     margin-top: 1em;
-    max-height: 300px;
+    height: 300px;
     overflow: auto;
     padding-right: 0.5em;
 
@@ -36,19 +60,52 @@ const Playlists = styled.div`
             background-color: ${(props) => props.theme.colors.primary};
         }
     }
-`;
+`)({ enter: { x: 1 }, exit: { x: ({ delta }) => -delta * 100 + 'vw' } });
 
-const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ playlists }) => {
+const Box = posed.div();
+
+const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ playlists, selectedPlaylist, onSelectPlaylist }) => {
+    const searchFieldValue = useSelector((state) => state.manager.searchFieldValue);
+
+    const disaptch = useDispatch();
+
+    const handleSearchFieldInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+        disaptch(inputSearchField(e.target.value));
+
+    const filteredPlaylists = playlists.filter((playlist) =>
+        playlist.name.toLowerCase().includes(searchFieldValue.toLowerCase())
+    );
+
     return (
         <PlaylistsWrapper>
-            <Field placeholder="Search playlist">
+            <Field placeholder="Search playlist" value={searchFieldValue} onChange={handleSearchFieldInput}>
                 <SearchIcon size={15} />
             </Field>
-            <Playlists>
-                {playlists.map((playlist) => (
-                    <Playlist name={playlist.name} key={playlist.id} />
-                ))}
-            </Playlists>
+            {!filteredPlaylists.length && (
+                <PlaylistsNotFound>
+                    <NotFoundIcon size={100} />
+                    <PlaylistsNotFoundTitle>Not found :(</PlaylistsNotFoundTitle>
+                </PlaylistsNotFound>
+            )}
+
+            {!!filteredPlaylists.length && (
+                <Playlists>
+                    <PoseGroup delta={1}>
+                        {filteredPlaylists.map((playlist) => (
+                            <Box key={playlist.id}>
+                                <Playlist
+                                    name={playlist.name}
+                                    selected={playlist.id === selectedPlaylist}
+                                    image={playlist.images[0]?.url}
+                                    key={playlist.id}
+                                    id={playlist.id}
+                                    onSelect={onSelectPlaylist}
+                                />
+                            </Box>
+                        ))}
+                    </PoseGroup>
+                </Playlists>
+            )}
         </PlaylistsWrapper>
     );
 };

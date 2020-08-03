@@ -7,7 +7,7 @@ import { PlaylistsViewer } from 'components/playlists';
 import styled from 'styled-components';
 import { SongsViewer } from 'components/songs';
 import { withAuth } from 'utils/withAuth';
-import { getPlaylists } from 'store/manager';
+import { getPlaylists, selectPlaylist } from 'store/manager';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'store';
 
@@ -21,14 +21,19 @@ const SongsContainer = styled.div`
 `;
 
 const ManagerPage: NextPage = () => {
-    const user = useSelector((state) => state.user.user);
     const playlists = useSelector((state) => state.manager.playlists);
+    const selectedPlaylist = useSelector((state) => state.manager.selectedPlaylist);
 
     const dispatch = useDispatch();
 
     useEffect((): void => {
-        dispatch(getPlaylists.request(user?.id || ''));
+        dispatch(getPlaylists.request());
     }, []);
+    ``;
+
+    const handleSelectPlaylist = (playlistId: string): void => {
+        if (selectedPlaylist !== playlistId) dispatch(selectPlaylist(playlistId));
+    };
 
     return (
         <div>
@@ -36,7 +41,11 @@ const ManagerPage: NextPage = () => {
                 <title>Manager</title>
             </Head>
             <ManagerContainer>
-                <PlaylistsViewer playlists={playlists} />
+                <PlaylistsViewer
+                    playlists={playlists}
+                    selectedPlaylist={selectedPlaylist}
+                    onSelectPlaylist={handleSelectPlaylist}
+                />
                 <SongsContainer>
                     <SongsViewer />
                 </SongsContainer>

@@ -6,4 +6,6 @@ export type ManagerActionTypes = ActionType<typeof managerActions>;
 
 export interface ManagerState {
     readonly playlists: UserPlaylist[];
+    readonly selectedPlaylist: null | string;
+    readonly searchFieldValue: string;
 }

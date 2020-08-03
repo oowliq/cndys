@@ -3,10 +3,10 @@ import { getPlaylists } from './actions';
 import { httpClient } from 'utils';
 import { UserPlaylists } from 'interfaces/spotify';
 
-function* getPlaylistsSaga(action: ReturnType<typeof getPlaylists.request>) {
+function* getPlaylistsSaga() {
     try {
         yield take('GET_USER_SUCCESS');
-        const { data } = yield httpClient.get<UserPlaylists>(`/users/${action.payload}/playlists`);
+        const { data } = yield httpClient.get<UserPlaylists>(`/me/playlists`);
         yield put(getPlaylists.success(data.items));
     } catch (err) {
         yield put(getPlaylists.failure(err));

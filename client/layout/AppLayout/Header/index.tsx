@@ -7,6 +7,7 @@ import { TopMenu } from './TopMenu';
 import { useSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { getUser } from 'store/user';
+import { httpClient } from 'utils';
 
 const HeaderWrap = styled.div`
     background-color: ${(props) => props.theme.colors.main};
@@ -50,7 +51,11 @@ const Header: FC = () => {
                 <LeftSide>
                     <TopMenu />
                 </LeftSide>
-                <Center>
+                <Center
+                    onClick={() => {
+                        httpClient.get('/me/tracks').then((d) => alert(d.data.total));
+                    }}
+                >
                     <Logo />
                 </Center>
                 <RightSide>{user && <Profile profile={user} />}</RightSide>
