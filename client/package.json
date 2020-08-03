@@ -10,6 +10,7 @@
     "dependencies": {
         "axios": "^0.19.2",
         "components": "link:./components",
+        "dotenv": "^8.2.0",
         "interfaces": "link:./interfaces",
         "layout": "link:./layout",
         "next": "latest",
