@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import { Field } from 'components/layout';
 import { Playlist } from './Playlist';
 import { SearchIcon } from 'components/icons';
+import { UserPlaylist } from 'interfaces/spotify';
+
+interface PlaylistsViewerProps {
+    playlists: UserPlaylist[];
+}
 
 const PlaylistsWrapper = styled.div`
     background-color: ${(props) => props.theme.colors.main};
@@ -33,15 +38,16 @@ const Playlists = styled.div`
     }
 `;
 
-const PlaylistsViewer: FC = () => {
+const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ playlists }) => {
     return (
         <PlaylistsWrapper>
             <Field placeholder="Search playlist">
                 <SearchIcon size={15} />
             </Field>
             <Playlists>
-                <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist />{' '}
-                <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist /> <Playlist />
+                {playlists.map((playlist) => (
+                    <Playlist name={playlist.name} key={playlist.id} />
+                ))}
             </Playlists>
         </PlaylistsWrapper>
     );

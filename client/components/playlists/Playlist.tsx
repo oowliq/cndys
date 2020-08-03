@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { SpotifyIcon, CloseIcon } from 'components/icons';
+import { CloseIcon } from 'components/icons';
 import { ClearButton } from 'components/buttons';
 import { darken } from 'polished';
+
+interface PlaylistProps {
+    name: string;
+}
 
 const PlaylistWrapper = styled.div`
     border-radius: 3px;
@@ -42,11 +46,11 @@ const RemoveButton = styled(ClearButton)`
     }
 `;
 
-const Playlist: FC = () => {
+const Playlist: FC<PlaylistProps> = ({ name }) => {
     return (
         <PlaylistWrapper>
             <PlaylistImage src="https://image.freepik.com/free-vector/_52683-21041.jpg"></PlaylistImage>
-            <PlaylistName>On Repeat</PlaylistName>
+            <PlaylistName>{name}</PlaylistName>
             <RemoveButton>
                 <CloseIcon size={12} />
             </RemoveButton>

@@ -3,7 +3,9 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
+import { wrapper } from 'store/configureStore';
+
+const App: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
     return (
         <>
             <Head>
@@ -13,4 +15,4 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {
         </>
     );
 };
-export default MyApp;
+export default wrapper.withRedux(App);

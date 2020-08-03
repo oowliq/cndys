@@ -5,6 +5,12 @@ import { ClearButton } from 'components/buttons';
 import ClickOutHandler from 'react-onclickout';
 import { darken } from 'polished';
 import posed from 'react-pose';
+import { Me } from 'interfaces/spotify';
+import { authService } from 'services';
+
+interface ProfileProps {
+    profile: Me;
+}
 
 const ProfileWrapper = styled.div`
     display: flex;
@@ -15,14 +21,15 @@ const ProfileWrapper = styled.div`
 const ProfileImageWrapper = styled.div`
     border-radius: 20em;
     overflow: hidden;
-    height: 40px;
-    width: 40px;
     border: 2px solid ${(props) => props.theme.colors.primary};
-    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const ProfileImageSource = styled.img`
     width: 40px;
+    padding: 3px;
     border-radius: 20em;
 `;
 
@@ -88,7 +95,7 @@ const ProfilePopupItemText = styled.span`
     margin-left: 1em;
 `;
 
-const Profile: FC = () => {
+const Profile: FC<ProfileProps> = ({ profile }) => {
     const [popupShowed, setPopupShowed] = useState(false);
 
     const handleTogglePopup = (e: React.MouseEvent): void => {
@@ -101,21 +108,23 @@ const Profile: FC = () => {
         setPopupShowed(false);
     };
 
+    const handleLogout = (): void => authService.logout();
+
     return (
         <ClickOutHandler onClickOut={handleClosePopup}>
             <ProfileWrapper>
                 <ProfileImageWrapper>
-                    <ProfileImageSource src="https://www.iconspng.com/images/abstract-tux-avatar/abstract-tux-avatar.jpg" />
+                    <ProfileImageSource src={profile.images[0].url} />
                 </ProfileImageWrapper>
                 <ProfileInfoWrapper>
-                    <ProfileUsername>oowliq</ProfileUsername>
+                    <ProfileUsername>{profile.display_name}</ProfileUsername>
                 </ProfileInfoWrapper>
                 <ProfilePopupButton reverse={popupShowed} onClick={handleTogglePopup}>
                     <ArrowDownIcon size={15} />
                 </ProfilePopupButton>
 
                 <ProfilePopupWrapper pose={popupShowed ? 'open' : 'closed'}>
-                    <ProfilePopupItem>
+                    <ProfilePopupItem onClick={handleLogout}>
                         <LogoutIcon size={15} />
                         <ProfilePopupItemText>Logout</ProfilePopupItemText>
                     </ProfilePopupItem>

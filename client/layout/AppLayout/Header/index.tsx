@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Container } from 'components/layout';
 import styled from 'styled-components';
 import { Logo } from './Logo';
 import { Profile } from './Profile';
 import { TopMenu } from './TopMenu';
+import { useSelector } from 'store';
+import { useDispatch } from 'react-redux';
+import { getUser } from 'store/user';
 
 const HeaderWrap = styled.div`
     background-color: ${(props) => props.theme.colors.main};
@@ -34,6 +37,13 @@ const Center = styled.div`
 `;
 
 const Header: FC = () => {
+    const user = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
+
+    useEffect((): void => {
+        dispatch(getUser.request());
+    }, []);
+
     return (
         <HeaderWrap>
             <HeaderContainer>
@@ -43,9 +53,7 @@ const Header: FC = () => {
                 <Center>
                     <Logo />
                 </Center>
-                <RightSide>
-                    <Profile />
-                </RightSide>
+                <RightSide>{user && <Profile profile={user} />}</RightSide>
             </HeaderContainer>
         </HeaderWrap>
     );

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NextPage } from 'next';
 import { withTheme } from 'theme';
 import styled from 'styled-components';
 import { ClearButton } from 'components/buttons';
 import { SpotifyIcon } from 'components/icons';
 import Head from 'next/head';
+import { authService } from 'services';
+import { useRouter } from 'next/router';
 
 const PageWrapper = styled.div`
     background-image: url(/images/hero.jpg);
@@ -67,7 +69,14 @@ const StartButtonText = styled.span`
 `;
 
 const AuthPage: NextPage = () => {
-    return (
+    const router = useRouter();
+    const handleSignIn = (): void => authService.signIn();
+
+    useEffect((): void => {
+        if (authService.isLoggedIn || authService.saveToken()) router.replace('/app/manager');
+    }, []);
+
+    return !authService.isLoggedIn ? (
         <PageWrapper>
             <Head>
                 <title>Authorization</title>
@@ -77,11 +86,11 @@ const AuthPage: NextPage = () => {
                 <AppDescription>Keep your song library organized</AppDescription>
                 <StartButton>
                     <SpotifyIcon size={30} />
-                    <StartButtonText>Get started now</StartButtonText>
+                    <StartButtonText onClick={handleSignIn}>Get started now</StartButtonText>
                 </StartButton>
             </AuthWrapper>
         </PageWrapper>
-    );
+    ) : null;
 };
 
 export default withTheme(AuthPage);
