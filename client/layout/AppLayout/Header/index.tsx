@@ -16,7 +16,7 @@ const HeaderContainer = styled(Container)`
     background-color: ${(props) => props.theme.colors.main};
     align-items: center;
     justify-content: space-between;
-    padding: 1em 0;
+    padding: 1em;
 `;
 
 const LeftSide = styled.div`

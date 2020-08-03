@@ -4,6 +4,7 @@ export interface StyledTheme {
         secondary: string;
         background: string;
         main: string;
+        inactive: string;
     };
     fontWeights: {
         bold: number;

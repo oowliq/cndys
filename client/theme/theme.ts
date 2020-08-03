@@ -6,6 +6,7 @@ const theme: StyledTheme = {
         secondary: '#ee5253',
         background: '#f1f2f6',
         main: '#fff',
+        inactive: '#353b48',
     },
     fontWeights: {
         bold: 800,
