@@ -10,7 +10,6 @@ import { withAuth } from 'utils/withAuth';
 import { getPlaylists, selectPlaylist, getLikedSongs, getPlaylistSongs } from 'store/manager';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'store';
-import ReactAudioPlayer from 'react-audio-player';
 
 const ManagerContainer = styled.div`
     display: flex;

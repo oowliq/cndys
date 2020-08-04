@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Field } from 'components/layout';
 import { Playlist } from './Playlist';
@@ -8,7 +8,7 @@ import { useSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { inputSearchField } from 'store/manager';
 import posed, { PoseGroup } from 'react-pose';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import Skeleton from 'react-loading-skeleton';
 
 interface PlaylistsViewerProps {
     playlists: UserPlaylist[];
@@ -68,7 +68,7 @@ const Playlists = posed(styled.div`
             background-color: ${(props) => props.theme.colors.primary};
         }
     }
-`)({ enter: { x: 1 }, exit: { x: ({ delta }) => -delta * 100 + 'vw' } });
+`)({ enter: { x: 1 }, exit: { x: ({ delta }: { delta: number }) => -delta * 100 + 'vw' } });
 
 const Box = posed.div();
 
