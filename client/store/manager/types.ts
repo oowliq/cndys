@@ -6,8 +6,8 @@ export type ManagerActionTypes = ActionType<typeof managerActions>;
 
 interface PlaylistData {
     id: string;
-    page: number;
     tracks: SpotifyApi.PlaylistTrackObject[];
+    page: number;
 }
 
 export interface ManagerState {

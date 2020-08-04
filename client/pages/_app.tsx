@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { wrapper } from 'store/configureStore';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }): ReactElement => {

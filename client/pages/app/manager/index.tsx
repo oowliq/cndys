@@ -7,7 +7,7 @@ import { PlaylistsViewer } from 'components/playlists';
 import styled from 'styled-components';
 import { SongsViewer } from 'components/songs';
 import { withAuth } from 'utils/withAuth';
-import { getPlaylists, selectPlaylist, getLikedSongs, getPlaylistSongs } from 'store/manager';
+import { getPlaylists, selectPlaylist, getLikedSongs, getPlaylistSongs, changePlaylistPage } from 'store/manager';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'store';
 
@@ -22,12 +22,21 @@ const SongsContainer = styled.div`
 `;
 
 const ManagerPage: NextPage = () => {
+    const pageSize = 10;
+
     const playlists = useSelector((state) => state.manager.playlists);
+
     const { currentPlaylist, playlistsData, fetching } = useSelector((state) => state.manager);
 
     const currentData = playlistsData.find((data) => data.id === currentPlaylist?.id);
 
     const dispatch = useDispatch();
+
+    const currentSongs = !currentData
+        ? []
+        : currentData.tracks.slice((currentData.page - 1) * pageSize, currentData.page * pageSize);
+
+    const maxPage = Math.ceil(!currentPlaylist ? 1 : currentPlaylist.tracks.total / pageSize);
 
     useEffect((): void => {
         dispatch(getPlaylists.request());
@@ -42,6 +51,10 @@ const ManagerPage: NextPage = () => {
         }
     };
 
+    const handleChagnePage = (page: number): void => {
+        if (currentPlaylist) dispatch(changePlaylistPage({ playlistId: currentPlaylist.id, page }));
+    };
+
     return (
         <div>
             <Head>
@@ -54,16 +67,20 @@ const ManagerPage: NextPage = () => {
                     selectedPlaylistId={currentPlaylist ? currentPlaylist.id : null}
                     onSelectPlaylist={handleSelectPlaylist}
                 />
+
                 <SongsContainer>
                     {currentPlaylist && (
                         <SongsViewer
+                            maxPage={maxPage}
+                            page={currentData?.page || 1}
+                            onChangePage={handleChagnePage}
                             id={currentPlaylist?.id || ''}
                             fetching={fetching.songs}
                             title={currentPlaylist?.name}
                             description={currentPlaylist?.description}
                             songsCount={currentPlaylist?.tracks.total}
                             image={currentPlaylist?.images[0]?.url}
-                            songs={currentData?.tracks || []}
+                            songs={currentSongs}
                         />
                     )}
                 </SongsContainer>

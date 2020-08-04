@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { CloseIcon, ImageIcon } from 'components/icons';
 import { ClearButton } from 'components/buttons';
 import { darken, lighten } from 'polished';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface PlaylistProps {
     name: string;
@@ -46,7 +47,7 @@ const PlaylistWrapper = styled.div<{ selected?: boolean }>`
         `}
 `;
 
-const PlaylistImage = styled.img`
+const PlaylistImage = styled(LazyLoadImage)`
     width: 20px;
     height: 20px;
     object-fit: cover;
@@ -93,7 +94,7 @@ const Playlist: FC<PlaylistProps> = ({ name, image, onSelect, id, selected }) =>
     return (
         <PlaylistWrapper onClick={handleClick} selected={selected}>
             {image ? (
-                <PlaylistImage src={image}></PlaylistImage>
+                <PlaylistImage src={image} effect="opacity"></PlaylistImage>
             ) : (
                 <PlaylistIcon>
                     <ImageIcon size={16} />

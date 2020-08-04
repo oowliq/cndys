@@ -17,10 +17,15 @@ export const getPlaylistSongs = createAsyncAction(
     '@@manager/GET_PLAYLIST_SONGS_REQUEST',
     '@@manager/GET_PLAYLIST_SONGS_SUCCESS',
     '@@manager/GET_PLAYLIST_SONGS_FAILURE'
-)<{ id: string }, { tracks: SpotifyApi.PlaylistTrackObject[]; page: number; id: string }, Error>();
+)<{ id: string }, { tracks: SpotifyApi.PlaylistTrackObject[]; id: string; page: number }, Error>();
 
 export const selectPlaylist = createAction('@@manager/SELECT_PLAYLIST')<string>();
 
 export const inputSearchField = createAction('@@manager/INPUT_SEARCH_FIELD')<string>();
 
-export default { getPlaylists, selectPlaylist, getLikedSongs, inputSearchField, getPlaylistSongs };
+export const changePlaylistPage = createAction('@@manager/CHANGE_PLAYLIST_PAGE')<{
+    playlistId: string;
+    page: number;
+}>();
+
+export default { getPlaylists, selectPlaylist, getLikedSongs, inputSearchField, getPlaylistSongs, changePlaylistPage };

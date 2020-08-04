@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface SongProps {
     name: string;
@@ -30,7 +31,7 @@ const SongName = styled.span`
     margin-left: 1em;
 `;
 
-const SongImage = styled.img`
+const SongImage = styled(LazyLoadImage)`
     width: 40px;
     height: 40px;
     object-fit: cover;

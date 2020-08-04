@@ -5,6 +5,10 @@ const ClearButton = styled.button`
     outline: none;
     background: none;
     padding: 0;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
 `;
 
 export { ClearButton };

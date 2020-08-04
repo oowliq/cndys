@@ -2,15 +2,20 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Song } from './Song';
 import Skeleton from 'react-loading-skeleton';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Pagination } from 'components/layout';
 
 interface SongsViewerProps {
     id: string;
     title?: string;
+    maxPage: number;
     fetching: boolean;
     description?: string;
     image?: string;
     songsCount?: number;
     songs: SpotifyApi.PlaylistTrackObject[];
+    page: number;
+    onChangePage: (page: number) => void;
 }
 
 const SongsViewerWrapper = styled.div`
@@ -32,7 +37,7 @@ const SongsViewerHeader = styled.div`
     }
 `;
 
-const SongsImage = styled.img`
+const SongsImage = styled(LazyLoadImage)`
     height: 100px;
     width: 100px;
     object-fit: cover;
@@ -109,7 +114,18 @@ const SongsWrapper = styled.div`
 
 const HeaderInfoWrapper = styled.div``;
 
-const SongsViewer: FC<SongsViewerProps> = ({ id, title, description, songsCount, image, songs, fetching }) => {
+const SongsViewer: FC<SongsViewerProps> = ({
+    id,
+    title,
+    description,
+    songsCount,
+    image,
+    songs,
+    fetching,
+    page,
+    maxPage,
+    onChangePage,
+}) => {
     return (
         <SongsViewerWrapper>
             <SongsViewerHeader>
@@ -137,6 +153,7 @@ const SongsViewer: FC<SongsViewerProps> = ({ id, title, description, songsCount,
                     <Song key={id + song.track.id} name={song.track.name} image={song.track.album.images[0]?.url} />
                 ))}
             </SongsWrapper>
+            <Pagination currentPage={page} maxPage={maxPage} onChangePage={onChangePage} />
         </SongsViewerWrapper>
     );
 };

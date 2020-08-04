@@ -7,6 +7,7 @@ import { darken } from 'polished';
 import posed from 'react-pose';
 import { Me } from 'interfaces/spotify';
 import { authService } from 'services';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface ProfileProps {
     profile: Me;
@@ -27,7 +28,7 @@ const ProfileImageWrapper = styled.div`
     justify-content: center;
 `;
 
-const ProfileImageSource = styled.img`
+const ProfileImageSource = styled(LazyLoadImage)`
     width: 40px;
     padding: 3px;
     border-radius: 20em;

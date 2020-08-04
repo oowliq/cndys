@@ -1,6 +1,13 @@
 import { ManagerState, ManagerActionTypes } from './types';
 import { createReducer } from 'typesafe-actions';
-import { getPlaylists, selectPlaylist, inputSearchField, getLikedSongs, getPlaylistSongs } from './actions';
+import {
+    getPlaylists,
+    selectPlaylist,
+    inputSearchField,
+    getLikedSongs,
+    getPlaylistSongs,
+    changePlaylistPage,
+} from './actions';
 
 const reducer = createReducer<ManagerState, ManagerActionTypes>({
     playlists: [],
@@ -60,6 +67,17 @@ const reducer = createReducer<ManagerState, ManagerActionTypes>({
     .handleAction(getPlaylistSongs.request, (state) => {
         const newState = { ...state };
         newState.fetching.songs = true;
+        return newState;
+    })
+    .handleAction(changePlaylistPage, (state, action) => {
+        const findData = state.playlistsData.find((data) => data.id === action.payload.playlistId);
+        if (findData) findData.page = action.payload.page;
+        if (!findData) return { ...state };
+        const newState = {
+            ...state,
+            playlistsData: [...state.playlistsData.filter((data) => data.id !== action.payload.playlistId), findData],
+        };
+
         return newState;
     })
     .handleAction(getPlaylistSongs.success, (state, action) => {
