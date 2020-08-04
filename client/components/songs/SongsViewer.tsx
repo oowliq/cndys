@@ -39,6 +39,11 @@ const SongsImage = styled.img`
     border-radius: 3px;
 `;
 
+const SongsImageSkeleton = styled(Skeleton)`
+    height: 100px;
+    width: 100px !important;
+`;
+
 const HeaderInfoBlock = styled.div`
     display: flex;
     flex-direction: column;
@@ -50,15 +55,34 @@ const HeaderTitle = styled.span`
     font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
+const HeaderTitleSkeleton = styled(Skeleton)`
+    font-size: 20px;
+    width: 130px !important;
+`;
+
 const HeaderDescription = styled.span`
     font-size: 12px;
     font-weight: ${(props) => props.theme.fontWeights.medium};
     margin-top: 0.4em;
 `;
 
+const HeaderDescriptionSkeleton = styled(Skeleton)`
+    font-size: 12px;
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    margin-top: 0.4em;
+    width: 200px !important;
+`;
+
 const HeaderSongsCount = styled.span`
     margin-top: 0.5em;
     font-size: 12px;
+    font-weight: ${(props) => props.theme.fontWeights.light};
+`;
+
+const HeaderSongsCountSkeleton = styled(Skeleton)`
+    margin-top: 0.5em;
+    font-size: 12px;
+    width: 80px !important;
     font-weight: ${(props) => props.theme.fontWeights.light};
 `;
 
@@ -89,17 +113,26 @@ const SongsViewer: FC<SongsViewerProps> = ({ id, title, description, songsCount,
     return (
         <SongsViewerWrapper>
             <SongsViewerHeader>
-                <SongsImage src={image} />
+                {!fetching ? <SongsImage src={image} /> : <SongsImageSkeleton />}
+
                 <HeaderInfoWrapper>
                     <HeaderInfoBlock>
-                        <HeaderTitle>{title}</HeaderTitle>
-                        <HeaderDescription>{description}</HeaderDescription>
-                        <HeaderSongsCount>Songs count: {songsCount?.toString()}</HeaderSongsCount>
+                        {!fetching ? <HeaderTitle>{title}</HeaderTitle> : <HeaderTitleSkeleton />}
+                        {!fetching ? (
+                            <HeaderDescription>{description}</HeaderDescription>
+                        ) : (
+                            <HeaderDescriptionSkeleton />
+                        )}
+                        {!fetching ? (
+                            <HeaderSongsCount>Songs count: {songsCount?.toString()}</HeaderSongsCount>
+                        ) : (
+                            <HeaderSongsCountSkeleton />
+                        )}
                     </HeaderInfoBlock>
                 </HeaderInfoWrapper>
             </SongsViewerHeader>
             <SongsWrapper>
-                {fetching && <Skeleton count={10} height={58} style={{ marginBottom: '1em' }} />}
+                {fetching && <Skeleton count={4} height={58} style={{ marginBottom: '1em' }} />}
                 {songs.map((song) => (
                     <Song key={id + song.track.id} name={song.track.name} image={song.track.album.images[0]?.url} />
                 ))}

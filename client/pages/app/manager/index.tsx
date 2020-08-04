@@ -37,7 +37,7 @@ const ManagerPage: NextPage = () => {
 
     const handleSelectPlaylist = (playlistId: string): void => {
         if (currentPlaylist?.id !== playlistId) {
-            dispatch(getPlaylistSongs.request({ id: playlistId }));
+            if (!playlistsData.find((p) => p.id === playlistId)) dispatch(getPlaylistSongs.request({ id: playlistId }));
             dispatch(selectPlaylist(playlistId));
         }
     };
@@ -55,15 +55,17 @@ const ManagerPage: NextPage = () => {
                     onSelectPlaylist={handleSelectPlaylist}
                 />
                 <SongsContainer>
-                    <SongsViewer
-                        id={currentPlaylist?.id || ''}
-                        fetching={fetching.songs}
-                        title={currentPlaylist?.name}
-                        description={currentPlaylist?.description}
-                        songsCount={currentPlaylist?.tracks.total}
-                        image={currentPlaylist?.images[0]?.url}
-                        songs={currentData?.tracks || []}
-                    />
+                    {currentPlaylist && (
+                        <SongsViewer
+                            id={currentPlaylist?.id || ''}
+                            fetching={fetching.songs}
+                            title={currentPlaylist?.name}
+                            description={currentPlaylist?.description}
+                            songsCount={currentPlaylist?.tracks.total}
+                            image={currentPlaylist?.images[0]?.url}
+                            songs={currentData?.tracks || []}
+                        />
+                    )}
                 </SongsContainer>
             </ManagerContainer>
         </div>
