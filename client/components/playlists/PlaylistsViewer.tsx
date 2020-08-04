@@ -8,10 +8,12 @@ import { useSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { inputSearchField } from 'store/manager';
 import posed, { PoseGroup } from 'react-pose';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 interface PlaylistsViewerProps {
     playlists: UserPlaylist[];
-    selectedPlaylist: string | null;
+    selectedPlaylistId: string | null;
+    fetching: boolean;
     onSelectPlaylist: (playlistId: string) => void;
 }
 
@@ -20,6 +22,8 @@ const PlaylistsWrapper = styled.div`
     padding: 1em;
     border-radius: 3px;
     min-width: 300px;
+    position: sticky;
+    top: 1em;
 `;
 
 const PlaylistsNotFound = styled.div`
@@ -30,6 +34,10 @@ const PlaylistsNotFound = styled.div`
     svg {
         fill: ${(props) => props.theme.colors.primary};
     }
+`;
+
+const PlaylistsFetching = styled.div`
+    height: 316px;
 `;
 
 const PlaylistsNotFoundTitle = styled.div`
@@ -64,7 +72,7 @@ const Playlists = posed(styled.div`
 
 const Box = posed.div();
 
-const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ playlists, selectedPlaylist, onSelectPlaylist }) => {
+const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ fetching, playlists, selectedPlaylistId, onSelectPlaylist }) => {
     const searchFieldValue = useSelector((state) => state.manager.searchFieldValue);
 
     const disaptch = useDispatch();
@@ -81,21 +89,27 @@ const PlaylistsViewer: FC<PlaylistsViewerProps> = ({ playlists, selectedPlaylist
             <Field placeholder="Search playlist" value={searchFieldValue} onChange={handleSearchFieldInput}>
                 <SearchIcon size={15} />
             </Field>
-            {!filteredPlaylists.length && (
+            {fetching && (
+                <PlaylistsFetching>
+                    <Skeleton count={5} height={40} style={{ marginTop: '1em' }} />
+                </PlaylistsFetching>
+            )}
+
+            {!fetching && !filteredPlaylists.length && (
                 <PlaylistsNotFound>
                     <NotFoundIcon size={100} />
                     <PlaylistsNotFoundTitle>Not found :(</PlaylistsNotFoundTitle>
                 </PlaylistsNotFound>
             )}
 
-            {!!filteredPlaylists.length && (
+            {!fetching && !!filteredPlaylists.length && (
                 <Playlists>
                     <PoseGroup delta={1}>
                         {filteredPlaylists.map((playlist) => (
                             <Box key={playlist.id}>
                                 <Playlist
                                     name={playlist.name}
-                                    selected={playlist.id === selectedPlaylist}
+                                    selected={playlist.id === selectedPlaylistId}
                                     image={playlist.images[0]?.url}
                                     key={playlist.id}
                                     id={playlist.id}

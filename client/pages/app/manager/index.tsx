@@ -7,12 +7,14 @@ import { PlaylistsViewer } from 'components/playlists';
 import styled from 'styled-components';
 import { SongsViewer } from 'components/songs';
 import { withAuth } from 'utils/withAuth';
-import { getPlaylists, selectPlaylist } from 'store/manager';
+import { getPlaylists, selectPlaylist, getLikedSongs, getPlaylistSongs } from 'store/manager';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'store';
+import ReactAudioPlayer from 'react-audio-player';
 
 const ManagerContainer = styled.div`
     display: flex;
+    align-items: flex-start;
 `;
 
 const SongsContainer = styled.div`
@@ -22,17 +24,23 @@ const SongsContainer = styled.div`
 
 const ManagerPage: NextPage = () => {
     const playlists = useSelector((state) => state.manager.playlists);
-    const selectedPlaylist = useSelector((state) => state.manager.selectedPlaylist);
+    const { currentPlaylist, playlistsData, fetching } = useSelector((state) => state.manager);
+
+    const currentData = playlistsData.find((data) => data.id === currentPlaylist?.id);
 
     const dispatch = useDispatch();
 
     useEffect((): void => {
         dispatch(getPlaylists.request());
+        dispatch(getLikedSongs.request());
     }, []);
     ``;
 
     const handleSelectPlaylist = (playlistId: string): void => {
-        if (selectedPlaylist !== playlistId) dispatch(selectPlaylist(playlistId));
+        if (currentPlaylist?.id !== playlistId) {
+            dispatch(getPlaylistSongs.request({ id: playlistId }));
+            dispatch(selectPlaylist(playlistId));
+        }
     };
 
     return (
@@ -42,12 +50,21 @@ const ManagerPage: NextPage = () => {
             </Head>
             <ManagerContainer>
                 <PlaylistsViewer
+                    fetching={fetching.playlists}
                     playlists={playlists}
-                    selectedPlaylist={selectedPlaylist}
+                    selectedPlaylistId={currentPlaylist ? currentPlaylist.id : null}
                     onSelectPlaylist={handleSelectPlaylist}
                 />
                 <SongsContainer>
-                    <SongsViewer />
+                    <SongsViewer
+                        id={currentPlaylist?.id || ''}
+                        fetching={fetching.songs}
+                        title={currentPlaylist?.name}
+                        description={currentPlaylist?.description}
+                        songsCount={currentPlaylist?.tracks.total}
+                        image={currentPlaylist?.images[0]?.url}
+                        songs={currentData?.tracks || []}
+                    />
                 </SongsContainer>
             </ManagerContainer>
         </div>
