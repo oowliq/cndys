@@ -2344,7 +2344,6 @@ component-emitter@^1.2.1:
 
 "components@link:./components":
   version "0.0.0"
-  uid ""
 
 compose-function@3.0.3:
   version "3.0.3"
@@ -3904,7 +3903,6 @@ inquirer@^7.0.0:
 
 "interfaces@link:./interfaces":
   version "0.0.0"
-  uid ""
 
 internal-slot@^1.0.2:
   version "1.0.2"
@@ -4275,7 +4273,6 @@ language-tags@^1.0.5:
 
 "layout@link:./layout":
   version "0.0.0"
-  uid ""
 
 leven@^3.1.0:
   version "3.1.0"
@@ -4393,9 +4390,9 @@ lodash.uniq@^4.5.0:
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
@@ -6234,7 +6231,6 @@ serialize-javascript@^3.1.0:
 
 "services@link:./services":
   version "0.0.0"
-  uid ""
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
@@ -6492,7 +6488,6 @@ static-extend@^0.1.1:
 
 "store@link:./store":
   version "0.0.0"
-  uid ""
 
 stream-browserify@^2.0.1:
   version "2.0.2"
@@ -6792,7 +6787,6 @@ text-table@^0.2.0:
 
 "theme@link:./theme":
   version "0.0.0"
-  uid ""
 
 through2@^2.0.0:
   version "2.0.5"
@@ -7129,7 +7123,6 @@ util@^0.11.0:
 
 "utils@link:./utils":
   version "0.0.0"
-  uid ""
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
